@@ -41,7 +41,7 @@ class _ArticleViewState extends State<ArticleView> {
           itemBuilder: (context, index) {
             // return Text(article!.query.pages.the736.extract);
             return Html(
-              data: article!.query.pages.the736.extract,
+              data: article!.query.pages.pageId.extract,
             );
           },
           itemCount: 1,

@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class TimeView extends StatefulWidget {
-  const TimeView({Key? key}) : super(key: key);
+  final List<bool> choice;
+  const TimeView({Key? key, required this.choice}) : super(key: key);
 
   @override
-  State<TimeView> createState() => _TimeViewState();
+  State<TimeView> createState() => _TimeViewState(choice);
 }
 
 class _TimeViewState extends State<TimeView> {
+  List<bool> choice;
+  _TimeViewState(this.choice);
+
   final List<int> choiceTime = List.generate(30, (index) => index + 1);
   var temps;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,6 +35,7 @@ class _TimeViewState extends State<TimeView> {
           const SizedBox(
             height: 60,
           ),
+          // const Text(choice[0]),
           const Text(
             'How much time do you have?',
             style: TextStyle(fontSize: 18),
@@ -66,12 +72,12 @@ class _TimeViewState extends State<TimeView> {
           OutlinedButton(
             onPressed: () {
               print("la valeur qu'on a eu est : $temps");
-
+              print(choice[0].toString());
+              print(choice[1].toString());
+              print(choice[2].toString());
               Navigator.of(context).pushNamed(
                 '/article/',
               );
-              // Navigator.of(context).pushNamed(
-              //   '/login/',);
             },
             child: const Text(
               'Art',

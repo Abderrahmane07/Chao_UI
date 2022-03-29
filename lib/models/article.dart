@@ -50,22 +50,22 @@ class Query {
 
 class Pages {
   Pages({
-    required this.the736,
+    required this.pageId,
   });
 
-  The736 the736;
+  PageId pageId;
 
   factory Pages.fromJson(Map<String, dynamic> json) => Pages(
-        the736: The736.fromJson(json["736"]),
+        pageId: PageId.fromJson(json[json.keys.first]),
       );
 
   Map<String, dynamic> toJson() => {
-        "736": the736.toJson(),
+        "pageId": pageId.toJson(),
       };
 }
 
-class The736 {
-  The736({
+class PageId {
+  PageId({
     required this.pageid,
     this.ns,
     required this.title,
@@ -77,7 +77,7 @@ class The736 {
   String title;
   String extract;
 
-  factory The736.fromJson(Map<String, dynamic> json) => The736(
+  factory PageId.fromJson(Map<String, dynamic> json) => PageId(
         pageid: json["pageid"],
         ns: json["ns"],
         title: json["title"],
