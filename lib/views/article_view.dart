@@ -44,8 +44,10 @@ class _ArticleViewState extends State<ArticleView> {
         child: ListView.builder(
           itemBuilder: (context, index) {
             // return Text(article!.query.pages.the736.extract);
+            String choosenArticle = article!.query.pages.pageId.extract;
+            print(choosenArticle.split(' ').length);
             return Html(
-              data: article!.query.pages.pageId.extract,
+              data: choosenArticle,
             );
           },
           itemCount: 1,

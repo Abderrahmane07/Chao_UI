@@ -42,9 +42,7 @@ class _TimeViewState extends State<TimeView> {
             'How much time do you have?',
             style: TextStyle(fontSize: 18),
           ),
-          // const SizedBox(
-          //   height: 250,
-          // ),
+
           CarouselSlider(
             options: CarouselOptions(
               height: 200.0,
@@ -73,10 +71,6 @@ class _TimeViewState extends State<TimeView> {
           ),
           OutlinedButton(
             onPressed: () {
-              print("la valeur qu'on a eu est : $temps");
-              print(choice[0].toString());
-              print(choice[1].toString());
-              print(choice[2].toString());
               _sendDataToThirdScreen(context);
               // Navigator.of(context).pushNamed(
               //   '/article/',
