@@ -4,13 +4,17 @@ import '../models/article.dart';
 import '../services/remote_service.dart';
 
 class ArticleView extends StatefulWidget {
-  const ArticleView({Key? key}) : super(key: key);
+  final List<bool> choice;
+  const ArticleView({Key? key, required this.choice}) : super(key: key);
 
   @override
-  State<ArticleView> createState() => _ArticleViewState();
+  State<ArticleView> createState() => _ArticleViewState(choice);
 }
 
 class _ArticleViewState extends State<ArticleView> {
+  List<bool> choice;
+  _ArticleViewState(this.choice);
+
   Article? article;
   var isLoaded = false;
 
@@ -21,7 +25,7 @@ class _ArticleViewState extends State<ArticleView> {
   }
 
   getData() async {
-    article = await RemoteService().getArticle();
+    article = await RemoteService().getArticle(choice);
     if (article != null) {
       setState(() {
         isLoaded = true;

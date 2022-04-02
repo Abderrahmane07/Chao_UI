@@ -20,7 +20,7 @@ class LoadingScreen extends StatelessWidget {
         '/login/': ((context) => const LoginView()),
         '/choice/': ((context) => const ChoiceView()),
         // '/time/': ((context) => const TimeView()),
-        '/article/': ((context) => const ArticleView()),
+        // '/article/': ((context) => const ArticleView()),
       },
     );
   }

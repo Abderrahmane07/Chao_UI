@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import 'article_view.dart';
+
 class TimeView extends StatefulWidget {
   final List<bool> choice;
   const TimeView({Key? key, required this.choice}) : super(key: key);
@@ -75,9 +77,10 @@ class _TimeViewState extends State<TimeView> {
               print(choice[0].toString());
               print(choice[1].toString());
               print(choice[2].toString());
-              Navigator.of(context).pushNamed(
-                '/article/',
-              );
+              _sendDataToThirdScreen(context);
+              // Navigator.of(context).pushNamed(
+              //   '/article/',
+              // );
             },
             child: const Text(
               'Art',
@@ -87,5 +90,16 @@ class _TimeViewState extends State<TimeView> {
         ],
       ),
     );
+  }
+
+  void _sendDataToThirdScreen(BuildContext context) {
+    List<bool> listToSend = choice;
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ArticleView(
+            choice: listToSend,
+          ),
+        ));
   }
 }
