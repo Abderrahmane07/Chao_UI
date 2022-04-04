@@ -46,15 +46,12 @@ class _ArticleViewState extends State<ArticleView> {
           itemBuilder: (context, index) {
             // return Text(article!.query.pages.the736.extract);
             String choosenArticle = article!.query.pages.pageId.extract;
-            //String choosenParagraph = decomposeToParagraphs(choosenArticle)[1];
             List<PartToRead> part = decomposeToPartsToRead(choosenArticle);
             String choosenPart = timeToArticle(part, 10);
             int partLength = lengthOfPart(choosenPart);
             print('The part contains $partLength words');
             int articleLength = lengthOfPart(choosenArticle);
             print('The article contains $articleLength words');
-            //int paragraphLength = lengthOfPart(choosenParagraph);
-            // print('The paragraph contains $paragraphLength words');
             return Html(
               data: choosenPart,
             );
@@ -67,25 +64,6 @@ class _ArticleViewState extends State<ArticleView> {
       ),
     );
   }
-
-  // List<String> decomposeToParagraphs(String article) {
-  //   String begOfParagraph = '<p';
-  //   String endOfParagraph = '</p>';
-  //   String truncatedArticle = article;
-  //   // String paragraph = '';
-  //   List<String> listOfParagraphs = [];
-  //   String paragraph;
-  //   // int index = 0;
-  //   while (truncatedArticle.contains(begOfParagraph)) {
-  //     int indexOfBeg = truncatedArticle.indexOf(begOfParagraph);
-  //     int indexOfEnd = truncatedArticle.indexOf(endOfParagraph);
-  //     paragraph = truncatedArticle.substring(indexOfBeg, indexOfEnd + 4);
-  //     truncatedArticle = truncatedArticle.substring(indexOfEnd + 4);
-  //     listOfParagraphs += [paragraph];
-  //   }
-
-  //   return listOfParagraphs;
-  // }
 
   int lengthOfPart(String text) {
     return text.split(' ').length;
