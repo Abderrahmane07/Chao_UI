@@ -6,15 +6,18 @@ import '../services/remote_service.dart';
 
 class ArticleView extends StatefulWidget {
   final List<bool> choice;
-  const ArticleView({Key? key, required this.choice}) : super(key: key);
+  final int time;
+  const ArticleView({Key? key, required this.choice, required this.time})
+      : super(key: key);
 
   @override
-  State<ArticleView> createState() => _ArticleViewState(choice);
+  State<ArticleView> createState() => _ArticleViewState(choice, time);
 }
 
 class _ArticleViewState extends State<ArticleView> {
   List<bool> choice;
-  _ArticleViewState(this.choice);
+  int time;
+  _ArticleViewState(this.choice, this.time);
 
   Article? article;
   var isLoaded = false;
@@ -47,7 +50,7 @@ class _ArticleViewState extends State<ArticleView> {
             // return Text(article!.query.pages.the736.extract);
             String choosenArticle = article!.query.pages.pageId.extract;
             List<PartToRead> part = decomposeToPartsToRead(choosenArticle);
-            String choosenPart = timeToArticle(part, 10);
+            String choosenPart = timeToArticle(part, time);
             int partLength = lengthOfPart(choosenPart);
             print('The part contains $partLength words');
             int articleLength = lengthOfPart(choosenArticle);

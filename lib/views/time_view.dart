@@ -37,12 +37,10 @@ class _TimeViewState extends State<TimeView> {
           const SizedBox(
             height: 60,
           ),
-          // const Text(choice[0]),
           const Text(
             'How much time do you have?',
             style: TextStyle(fontSize: 18),
           ),
-
           CarouselSlider(
             options: CarouselOptions(
               height: 200.0,
@@ -50,7 +48,6 @@ class _TimeViewState extends State<TimeView> {
               initialPage: 10,
             ),
             items: choiceTime.map((i) {
-              // temps = i;
               return Builder(
                 builder: (BuildContext context) {
                   temps = i - 1;
@@ -93,6 +90,7 @@ class _TimeViewState extends State<TimeView> {
         MaterialPageRoute(
           builder: (context) => ArticleView(
             choice: listToSend,
+            time: temps,
           ),
         ));
   }
