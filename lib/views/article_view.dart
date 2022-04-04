@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:tentative_chao_1/models/part_to_read.dart';
 import '../models/article.dart';
 import '../services/remote_service.dart';
 
@@ -45,9 +46,17 @@ class _ArticleViewState extends State<ArticleView> {
           itemBuilder: (context, index) {
             // return Text(article!.query.pages.the736.extract);
             String choosenArticle = article!.query.pages.pageId.extract;
-            print(choosenArticle.split(' ').length);
+            //String choosenParagraph = decomposeToParagraphs(choosenArticle)[1];
+            List<PartToRead> part = decomposeToPartsToRead(choosenArticle);
+            String choosenPart = timeToArticle(part, 10);
+            int partLength = lengthOfPart(choosenPart);
+            print('The part contains $partLength words');
+            int articleLength = lengthOfPart(choosenArticle);
+            print('The article contains $articleLength words');
+            //int paragraphLength = lengthOfPart(choosenParagraph);
+            // print('The paragraph contains $paragraphLength words');
             return Html(
-              data: choosenArticle,
+              data: choosenPart,
             );
           },
           itemCount: 1,
@@ -57,5 +66,68 @@ class _ArticleViewState extends State<ArticleView> {
         ),
       ),
     );
+  }
+
+  // List<String> decomposeToParagraphs(String article) {
+  //   String begOfParagraph = '<p';
+  //   String endOfParagraph = '</p>';
+  //   String truncatedArticle = article;
+  //   // String paragraph = '';
+  //   List<String> listOfParagraphs = [];
+  //   String paragraph;
+  //   // int index = 0;
+  //   while (truncatedArticle.contains(begOfParagraph)) {
+  //     int indexOfBeg = truncatedArticle.indexOf(begOfParagraph);
+  //     int indexOfEnd = truncatedArticle.indexOf(endOfParagraph);
+  //     paragraph = truncatedArticle.substring(indexOfBeg, indexOfEnd + 4);
+  //     truncatedArticle = truncatedArticle.substring(indexOfEnd + 4);
+  //     listOfParagraphs += [paragraph];
+  //   }
+
+  //   return listOfParagraphs;
+  // }
+
+  int lengthOfPart(String text) {
+    return text.split(' ').length;
+  }
+
+  List<PartToRead> decomposeToPartsToRead(String article) {
+    String begOfParagraph = '<p';
+    String endOfParagraph = '</p>';
+    String truncatedArticle = article;
+
+    List<PartToRead> listOfParts = [];
+    PartToRead part;
+    String paragraph;
+
+    while (truncatedArticle.contains(begOfParagraph)) {
+      int indexOfBeg = truncatedArticle.indexOf(begOfParagraph);
+      int indexOfEnd = truncatedArticle.indexOf(endOfParagraph);
+      paragraph = truncatedArticle.substring(indexOfBeg, indexOfEnd + 4);
+      truncatedArticle = truncatedArticle.substring(indexOfEnd + 4);
+
+      part = PartToRead(text: paragraph, lengthOfPart: lengthOfPart(paragraph));
+      listOfParts += [part];
+    }
+
+    return listOfParts;
+  }
+
+  String timeToArticle(List<PartToRead> listOfParts, int temps) {
+    int speed =
+        120; // Basic Speed of 120 words/minute, you'll find online that people can
+    // read faster but it's not the case as we get easily distracted. So we take this as a base but we can change it later
+    int words = speed * temps;
+    int wordsCount = 0;
+    String partToRead = '';
+    int index = 0;
+    while (wordsCount < 0.9 * words) {
+      partToRead += listOfParts[index].text;
+      wordsCount += listOfParts[index].lengthOfPart;
+
+      index += 1;
+    }
+
+    return partToRead;
   }
 }
