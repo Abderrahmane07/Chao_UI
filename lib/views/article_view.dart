@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:tentative_chao_1/models/part_to_read.dart';
+import 'package:tentative_chao_1/views/sidebar_view.dart';
 import '../models/article.dart';
 import '../services/remote_service.dart';
 
 class ArticleView extends StatefulWidget {
   final List<bool> choice;
+
   final int time;
   const ArticleView({Key? key, required this.choice, required this.time})
       : super(key: key);
@@ -13,6 +15,8 @@ class ArticleView extends StatefulWidget {
   @override
   State<ArticleView> createState() => _ArticleViewState(choice, time);
 }
+
+int index = 0;
 
 class _ArticleViewState extends State<ArticleView> {
   List<bool> choice;
@@ -40,6 +44,7 @@ class _ArticleViewState extends State<ArticleView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const SidebarView(),
       appBar: AppBar(
         title: const Text('Article'),
       ),
@@ -50,13 +55,33 @@ class _ArticleViewState extends State<ArticleView> {
             // return Text(article!.query.pages.the736.extract);
             String choosenArticle = article!.query.pages.pageId.extract;
             List<PartToRead> part = decomposeToPartsToRead(choosenArticle);
-            String choosenPart = timeToArticle(part, time);
+            String choosenPart = timeToArticle(part, time)[0];
+            int index = timeToArticle(part, time)[1];
             int partLength = lengthOfPart(choosenPart);
             print('The part contains $partLength words');
             int articleLength = lengthOfPart(choosenArticle);
             print('The article contains $articleLength words');
-            return Html(
-              data: choosenPart,
+            return Column(
+              children: [
+                Html(
+                  data: choosenPart,
+                ),
+                OutlinedButton(
+                  onPressed: () {
+                    print(index);
+                    for (int i = 0; i < index; i++) {
+                      part[i].isRead = true;
+                      print(part[i].isRead);
+                      print('$i');
+                    }
+                    print('Reading Done');
+                  },
+                  child: const Text(
+                    'Done Reading',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
             );
           },
           itemCount: 1,
@@ -94,21 +119,22 @@ class _ArticleViewState extends State<ArticleView> {
     return listOfParts;
   }
 
-  String timeToArticle(List<PartToRead> listOfParts, int temps) {
+  List timeToArticle(List<PartToRead> listOfParts, int temps) {
     int speed =
         120; // Basic Speed of 120 words/minute, you'll find online that people can
     // read faster but it's not the case as we get easily distracted. So we take this as a base but we can change it later
     int words = speed * temps;
     int wordsCount = 0;
     String partToRead = '';
-    int index = 0;
+    index = 0;
     while (wordsCount < 0.9 * words) {
-      partToRead += listOfParts[index].text;
-      wordsCount += listOfParts[index].lengthOfPart;
-
+      if (!listOfParts[index].isRead) {
+        partToRead += listOfParts[index].text;
+        wordsCount += listOfParts[index].lengthOfPart;
+      }
       index += 1;
     }
 
-    return partToRead;
+    return [partToRead, index];
   }
 }

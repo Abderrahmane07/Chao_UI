@@ -112,4 +112,4 @@ const List<String> domaines = [
   "Finance",
   "Architecture"
 ];
-List<bool> activateds = List.generate(13, (_) => false);
+List<bool> activateds = List.generate(domaines.length, (_) => false);
