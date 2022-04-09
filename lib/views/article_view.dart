@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:provider/provider.dart';
 import 'package:tentative_chao_1/models/part_to_read.dart';
 import 'package:tentative_chao_1/views/sidebar_view.dart';
 import '../models/article.dart';
+import '../providers/our_font_size_provider.dart';
 import '../services/remote_service.dart';
 
 class ArticleView extends StatefulWidget {
@@ -65,6 +67,13 @@ class _ArticleViewState extends State<ArticleView> {
               children: [
                 Html(
                   data: choosenPart,
+                  style: {
+                    'p': Style(
+                      fontSize: FontSize(
+                          (Provider.of<OurFontSize>(context).ourFontSize)
+                              .toDouble()),
+                    )
+                  },
                 ),
                 OutlinedButton(
                   onPressed: () {

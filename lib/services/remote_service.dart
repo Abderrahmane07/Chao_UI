@@ -76,6 +76,11 @@ const Map<String, List<String>> links = {
     'https://en.wikipedia.org/wiki/World_War_II',
     'https://en.wikipedia.org/wiki/Hirohito'
   ],
+  // 'Religion': [
+  //   'https://en.wikipedia.org/wiki/Wahhabism',
+  //   'https://en.wikipedia.org/wiki/Wahhabism',
+  //   'https://en.wikipedia.org/wiki/Wahhabism'
+  // ],
   'Medicine': [
     'https://en.wikipedia.org/wiki/Constellation',
     'https://en.wikipedia.org/wiki/Cosmic_wind',

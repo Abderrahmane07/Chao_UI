@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tentative_chao_1/providers/our_font_size_provider.dart';
 import 'package:tentative_chao_1/providers/our_theme_provider.dart';
 
 class SidebarView extends StatefulWidget {
@@ -13,24 +14,12 @@ class SidebarView extends StatefulWidget {
 class _SidebarViewState extends State<SidebarView> {
   bool isDarkView = false;
   bool isNoDisturbMode = false;
-  int taille = 14;
+
   List<bool> _selections = List.generate(3, (_) => false);
 
-  void _incrementCounter() {
-    setState(() {
-      taille++;
-    });
-  }
-
-  void _decrementCounter() {
-    setState(() {
-      taille--;
-    });
-  }
-
-// context.read<OurTheme>().isDark
   @override
   Widget build(BuildContext context) {
+    int taille = Provider.of<OurFontSize>(context).ourFontSize;
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -59,10 +48,6 @@ class _SidebarViewState extends State<SidebarView> {
           ),
           Column(
             children: [
-              //Text('{$context.watch<OurTheme>().isDark}'),
-              // const SizedBox(
-              //   height: 100,
-              // ),
               Row(
                 children: [
                   Switch(
@@ -70,12 +55,9 @@ class _SidebarViewState extends State<SidebarView> {
                     onChanged: (value) {
                       Provider.of<OurTheme>(context, listen: false)
                           .change(value);
-                      // context.read<OurTheme>().change(value);
                       setState(() {
-                        //var co = context.watch<OurTheme>().isDark;
                         isDarkView = value;
                         print(isDarkView);
-                        //print(co.runtimeType);
                       });
                     },
                   ),
@@ -150,14 +132,22 @@ class _SidebarViewState extends State<SidebarView> {
                       children: [
                         TextButton(
                           onPressed: () {
-                            _decrementCounter();
+                            Provider.of<OurFontSize>(context, listen: false)
+                                .decrement();
+                            setState(() {
+                              taille--;
+                            });
                           },
                           child: const Text('-'),
                         ),
                         Text('$taille'),
                         TextButton(
                           onPressed: () {
-                            _incrementCounter();
+                            Provider.of<OurFontSize>(context, listen: false)
+                                .increment();
+                            setState(() {
+                              taille++;
+                            });
                           },
                           child: const Text('+'),
                         ),
