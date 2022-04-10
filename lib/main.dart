@@ -6,13 +6,17 @@ import 'package:tentative_chao_1/providers/our_font_family.dart';
 import 'package:tentative_chao_1/providers/our_font_size_provider.dart';
 import 'package:tentative_chao_1/providers/our_theme_provider.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tentative_chao_1/views/article_view.dart';
+// import 'package:tentative_chao_1/views/article_view.dart';
 import 'package:tentative_chao_1/views/choice_view.dart';
 import 'package:tentative_chao_1/views/login_view.dart';
 // import 'package:tentative_chao_1/views/time_view.dart';
 import 'package:tentative_chao_1/views/welcome_view.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(

@@ -1,13 +1,13 @@
-class PartToRead {
+class Paragraph {
   bool isRead = false;
   String text;
-  int lengthOfPart;
+  int lengthOfParagraph;
 
   String? fatherArticle;
   String? section;
 
-  PartToRead({
+  Paragraph({
     required this.text,
-    required this.lengthOfPart,
+    required this.lengthOfParagraph,
   });
 }
