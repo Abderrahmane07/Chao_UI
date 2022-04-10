@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tentative_chao_1/providers/our_font_family.dart';
 import 'package:tentative_chao_1/providers/our_font_size_provider.dart';
 import 'package:tentative_chao_1/providers/our_theme_provider.dart';
 
@@ -14,12 +15,14 @@ class SidebarView extends StatefulWidget {
 class _SidebarViewState extends State<SidebarView> {
   bool isDarkView = false;
   bool isNoDisturbMode = false;
+  // String font = 'Neuton';
 
   List<bool> _selections = List.generate(3, (_) => false);
 
   @override
   Widget build(BuildContext context) {
     int taille = Provider.of<OurFontSize>(context).ourFontSize;
+    String font = Provider.of<OurFontFamily>(context).ourFontFamily;
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -81,29 +84,78 @@ class _SidebarViewState extends State<SidebarView> {
               const SizedBox(
                 height: 10,
               ),
-              CarouselSlider(
-                items:
-                    ['Neuton', 'Lato', 'Comic Sans', 'Open Dyslexic'].map((i) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: const BoxDecoration(color: Colors.black12),
-                        child: Center(
-                          child: Text(
-                            i,
-                            style: const TextStyle(fontSize: 16.0),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }).toList(),
-                options: CarouselOptions(
-                  height: 70,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        print(font);
+                        Provider.of<OurFontFamily>(context, listen: false)
+                            .previous();
+                        setState(() {
+                          if (font == 'Neuton') {
+                            font = 'OpenSans';
+                          }
+                          if (font == 'Lato') {
+                            font = 'Neuton';
+                          }
+                          if (font == 'OpenSans') {
+                            font = 'Lato';
+                          }
+                        });
+                        print(font);
+                      },
+                      child: const Icon(Icons.arrow_back),
+                    ),
+                    Text(font),
+                    TextButton(
+                      onPressed: () {
+                        print(font);
+                        Provider.of<OurFontFamily>(context, listen: false)
+                            .next();
+                        setState(() {
+                          if (font == 'Neuton') {
+                            font = 'Lato';
+                          }
+                          if (font == 'Lato') {
+                            font = 'OpenSans';
+                          }
+                          if (font == 'OpenSans') {
+                            font = 'Neuton';
+                          }
+                        });
+                        print(font);
+                      },
+                      child: const Icon(Icons.arrow_forward),
+                    ),
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
                 ),
               ),
+              // CarouselSlider(
+              //   items: ['Neuton', 'Lato', 'Roboto'].map((i) {
+              //     return Builder(
+              //       builder: (BuildContext context) {
+              //         font = i;
+              //         return Container(
+              //           width: MediaQuery.of(context).size.width,
+              //           margin: const EdgeInsets.symmetric(horizontal: 5.0),
+              //           decoration: const BoxDecoration(color: Colors.black12),
+              //           child: Center(
+              //             child: Text(
+              //               i,
+              //               style: const TextStyle(fontSize: 16.0),
+              //             ),
+              //           ),
+              //         );
+              //       },
+              //     );
+              //   }).toList(),
+              //   options: CarouselOptions(
+              //     height: 70,
+              //   ),
+              // ),
               const SizedBox(
                 height: 30,
               ),

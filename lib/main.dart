@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tentative_chao_1/providers/our_font_family.dart';
 import 'package:tentative_chao_1/providers/our_font_size_provider.dart';
 import 'package:tentative_chao_1/providers/our_theme_provider.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,9 @@ void main() {
       ChangeNotifierProvider(
         create: (_) => OurFontSize(),
       ),
+      ChangeNotifierProvider(
+        create: (_) => OurFontFamily(),
+      ),
     ],
     child: const LoadingScreen(),
   ));
@@ -30,9 +34,15 @@ class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: (Provider.of<OurTheme>(context).isDark
+      theme: ThemeData(
+        fontFamily: Provider.of<OurFontFamily>(context).ourFontFamily,
+      ),
+      darkTheme: (Provider.of<OurTheme>(context).isDark
           ? ThemeData.dark()
           : ThemeData.light()),
+      themeMode: (Provider.of<OurTheme>(context).isDark
+          ? ThemeMode.dark
+          : ThemeMode.light),
       routes: {
         '/': ((context) => const WelcomeView()),
         '/login/': ((context) => const LoginView()),
