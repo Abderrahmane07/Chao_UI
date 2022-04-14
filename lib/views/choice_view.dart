@@ -32,26 +32,49 @@ class _ChoiceViewState extends State<ChoiceView> {
             'Select fields that you like reading about:',
             style: TextStyle(fontSize: 18),
           ),
-          SizedBox(
-            height: 250,
-            child: ListView(
-              children: [
-                choiceButton(0),
-                choiceButton(1),
-                choiceButton(2),
-                choiceButton(3),
-                choiceButton(4),
-                choiceButton(5),
-                choiceButton(6),
-                choiceButton(7),
-                choiceButton(8),
-                OutlinedButton(
-                  onPressed: () {
-                    debugPrint('ha gowa mcha l page a5ra');
-                  },
-                  child: const Text('Connecter'),
-                ),
-              ],
+          Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              //width: MediaQuery.of(context).size.width,
+              height: 250,
+              //width: 300,
+              child: ListView(scrollDirection: Axis.vertical,
+                  // shrinkWrap: true,
+                  children: [
+                    Align(
+                      child: choiceButton(0),
+                    ),
+                    Align(
+                      child: choiceButton(1),
+                    ),
+                    Align(
+                      child: choiceButton(2),
+                    ),
+                    Align(
+                      child: choiceButton(3),
+                    ),
+                    Align(
+                      child: choiceButton(4),
+                    ),
+                    Align(
+                      child: choiceButton(5),
+                    ),
+                    Align(
+                      child: choiceButton(6),
+                    ),
+                    Align(
+                      child: choiceButton(7),
+                    ),
+                    Align(
+                      child: choiceButton(8),
+                    ),
+                    Align(
+                      child: choiceButton(9),
+                    ),
+                    Align(
+                      child: choiceButton(10),
+                    ),
+                  ]),
             ),
           ),
           OutlinedButton(
@@ -62,7 +85,7 @@ class _ChoiceViewState extends State<ChoiceView> {
               // );
             },
             child: const Text(
-              'Art',
+              'Choose fields',
               style: TextStyle(color: Colors.black),
             ),
           ),

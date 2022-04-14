@@ -54,10 +54,10 @@ class _TimeViewState extends State<TimeView> {
                   return Container(
                     height: 50,
                     width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(color: Colors.amber),
+                    decoration: const BoxDecoration(color: Colors.transparent),
                     child: Center(
                       child: Text(
-                        'text $i',
+                        '$i Min',
                         style: const TextStyle(fontSize: 16.0),
                       ),
                     ),
@@ -74,7 +74,7 @@ class _TimeViewState extends State<TimeView> {
               // );
             },
             child: const Text(
-              'Art',
+              'Go',
               style: TextStyle(color: Colors.black),
             ),
           ),
