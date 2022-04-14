@@ -12,7 +12,6 @@ class SidebarView extends StatefulWidget {
 }
 
 class _SidebarViewState extends State<SidebarView> {
-  bool isDarkView = false;
   bool isNoDisturbMode = false;
   // String font = 'Neuton';
 
@@ -20,6 +19,7 @@ class _SidebarViewState extends State<SidebarView> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkView = Provider.of<OurTheme>(context).isDark;
     int taille = Provider.of<OurFontSize>(context).ourFontSize;
     String font = Provider.of<OurFontFamily>(context).ourFontFamily;
     return Drawer(

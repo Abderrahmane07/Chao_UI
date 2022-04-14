@@ -47,6 +47,48 @@ class _ArticleViewState extends State<ArticleView> {
 
   @override
   Widget build(BuildContext context) {
+    //CollectionReference articles =
+    //   FirebaseFirestore.instance.collection('Articles');
+    // return StreamBuilder<QuerySnapshot>(
+    //   stream: FirebaseFirestore.instance.collection('Articles').snapshots(),
+    //   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+    //     if (snapshot.hasError) {
+    //       return const Text('Something is not working');
+    //     }
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       return const Text('Loading');
+    //     }
+    //     final data = snapshot.requireData;
+    //     return Scaffold(
+    //       body: ListView.builder(
+    //           itemCount: data.size,
+    //           itemBuilder: (context, index) {
+    //             return Column(
+    //               children: [
+    //                 Text(
+    //                   '${data.docs[index]['title']}',
+    //                   style: TextStyle(fontSize: 25),
+    //                 ),
+    //                 Text(
+    //                   '${data.docs[index]['extract']}',
+    //                   style: TextStyle(fontSize: 16),
+    //                 ),
+    //                 ElevatedButton(
+    //                   onPressed: () {
+    //                     articles.add({
+    //                       'extract': article!.query.pages.pageId.extract,
+    //                       'title': article!.query.pages.pageId.title,
+    //                       'pageid': article!.query.pages.pageId.pageid,
+    //                     });
+    //                   },
+    //                   child: Text('Coco'),
+    //                 )
+    //               ],
+    //             );
+    //           }),
+    //     );
+    //   },
+    // );
     return Scaffold(
       drawer: const SidebarView(),
       appBar: AppBar(
