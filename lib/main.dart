@@ -10,6 +10,7 @@ import 'package:tentative_chao_1/providers/our_theme_provider.dart';
 import 'package:tentative_chao_1/views/choice_view.dart';
 import 'package:tentative_chao_1/views/login_view.dart';
 import 'package:tentative_chao_1/views/register_view.dart';
+import 'package:tentative_chao_1/views/verify_email_view.dart';
 // import 'package:tentative_chao_1/views/time_view.dart';
 import 'package:tentative_chao_1/views/welcome_view.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -53,6 +54,7 @@ class LoadingScreen extends StatelessWidget {
         '/login/': ((context) => const LoginView()),
         '/choice/': ((context) => const ChoiceView()),
         '/register/': ((context) => const RegisterView()),
+        '/verify/': ((context) => const VerifyEmailView()),
         // '/time/': ((context) => const TimeView()),
         // '/article/': ((context) => const ArticleView()),
       },

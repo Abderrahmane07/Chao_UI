@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tentative_chao_1/services/auth/auth_exceptions.dart';
 import 'package:tentative_chao_1/services/auth/auth_service.dart';
 
+import '../functions/error_dialog.dart';
 import '../services/auth/auth_service.dart';
 
 class RegisterView extends StatefulWidget {
@@ -42,9 +43,9 @@ class _RegisterViewState extends State<RegisterView> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Image(
-            image: AssetImage('assets/Homme_1.png'),
-          ),
+          // const Image(
+          //   image: AssetImage('assets/Homme_1.png'),
+          // ),
           const SizedBox(
             height: 20,
           ),
@@ -80,7 +81,7 @@ class _RegisterViewState extends State<RegisterView> {
             ),
           ),
           const SizedBox(
-            height: 100,
+            height: 50,
           ),
           OutlinedButton(
             onPressed: () async {
@@ -91,7 +92,7 @@ class _RegisterViewState extends State<RegisterView> {
                     .createUser(email: email, password: password);
 
                 AuthService.firebase().sendEmailVerification();
-                Navigator.of(context).pushNamed('/choice/');
+                Navigator.of(context).pushNamed('/verify/');
               } on WeakPasswordAuthException {
                 await showErrorDialog(
                     context, "Weak password, make it better!");
@@ -111,26 +112,15 @@ class _RegisterViewState extends State<RegisterView> {
             },
             child: const Text('Connecter'),
           ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/login/', (route) => false);
+            },
+            child: const Text("Already registred? Log in here"),
+          ),
         ],
       ),
     );
   }
-}
-
-Future<void> showErrorDialog(BuildContext context, String text) {
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('An error occured'),
-          content: Text(text),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('ok')),
-          ],
-        );
-      });
 }
