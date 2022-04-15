@@ -4,6 +4,8 @@ import 'package:tentative_chao_1/providers/our_font_family.dart';
 import 'package:tentative_chao_1/providers/our_font_size_provider.dart';
 import 'package:tentative_chao_1/providers/our_theme_provider.dart';
 
+import '../services/auth/auth_service.dart';
+
 class SidebarView extends StatefulWidget {
   const SidebarView({Key? key}) : super(key: key);
 
@@ -180,11 +182,49 @@ class _SidebarViewState extends State<SidebarView> {
                     )
                   ],
                 ),
-              )
+              ),
+              const SizedBox(
+                height: 100,
+              ),
+              TextButton(
+                onPressed: () async {
+                  final shouldLogout = await showLogOutDialog(context);
+                  if (shouldLogout) {
+                    await AuthService.firebase().logOut();
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/login/', (_) => false);
+                  }
+                },
+                child: const Text('Log Out'),
+              ),
             ],
           )
         ],
       ),
     );
   }
+}
+
+Future<bool> showLogOutDialog(BuildContext context) {
+  return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+            title: const Text('Sign out'),
+            content: const Text('Are you sure you want to log out?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text('Log out'),
+              ),
+            ]);
+      }).then((value) => value ?? false);
 }
