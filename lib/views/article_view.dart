@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,7 @@ class _ArticleViewState extends State<ArticleView> {
 
   Article? article;
   var isLoaded = false;
+  var dataOnUser;
 
   @override
   void initState() {
@@ -43,25 +46,17 @@ class _ArticleViewState extends State<ArticleView> {
 
   getData() async {
     article = await RemoteService().getArticle(choice);
-    if (article != null) {
-      setState(() {
-        isLoaded = true;
-      });
-    }
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection(
             'Users') //.where('user?.uid.articles.article[0].isread', isEqualTo: true)
         .doc(user?.uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       try {
-        dynamic dataonuser =
-            documentSnapshot.get(FieldPath(['articles', 'article']));
-        print(dataonuser[0]['isreadparts']);
+        dataOnUser = documentSnapshot.get(FieldPath(['articles', 'article']));
+        //print(dataOnUser[1]['isreadparts']);
+        //print(dataOnUser);
       } on StateError catch (e) {
         print('No nested field exists!');
       }
@@ -72,6 +67,15 @@ class _ArticleViewState extends State<ArticleView> {
       //   print('Document exists on the database');
       // }
     });
+    if (article != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     //final data = snapshot.requireData;
     return Scaffold(
       drawer: const SidebarView(),
@@ -82,12 +86,19 @@ class _ArticleViewState extends State<ArticleView> {
         visible: isLoaded,
         child: ListView.builder(
           itemBuilder: (context, index) {
+            print('ici $dataOnUser');
+            //print(List<bool>.from(dataOnUser[2]['isreadparts']).runtimeType);
+            int toStartFrom = ArticleFunctions()
+                .coco(List<bool>.from(dataOnUser[2]['isreadparts']));
             // final userCredential = FirebaseAuth.instance.currentUser?.uid;
             // return Text(article!.query.pages.the736.extract);
             String choosenArticle = article!.query.pages.pageId.extract;
-            List<Paragraph> part =
+            List<Paragraph> originalPart =
                 ArticleFunctions().decomposeToParagraphs(choosenArticle);
-            //List<bool> temporary = ;
+            List<Paragraph> part = originalPart
+                .getRange(toStartFrom, originalPart.length)
+                .toList();
+
             String choosenPart =
                 ArticleFunctions().timeToArticle(part, time)[0];
             int index = ArticleFunctions().timeToArticle(part, time)[1];
@@ -110,8 +121,10 @@ class _ArticleViewState extends State<ArticleView> {
                 ),
                 OutlinedButton(
                   onPressed: () {
-                    List<bool> listOfIsRead = List.filled(part.length, false);
-                    for (int i = 0; i < index; i++) {
+                    List<bool> listOfIsRead =
+                        List<bool>.from(dataOnUser[2]['isreadparts']) ??
+                            List.filled(originalPart.length, false);
+                    for (int i = toStartFrom; i < toStartFrom + index; i++) {
                       //part[i].isRead = true;
                       listOfIsRead[i] = true;
 
@@ -121,6 +134,7 @@ class _ArticleViewState extends State<ArticleView> {
                         ? true
                         : false;
                     print(index);
+                    //List newArticle = ;
                     FirebaseFirestore.instance
                         .collection('Users')
                         .doc(user?.uid)
@@ -129,24 +143,18 @@ class _ArticleViewState extends State<ArticleView> {
                       'speed': 120,
                       //'fontsize': 14,
                       'articles': {
-                        'article': [
-                          {
-                            'pageid': article!.query.pages.pageId.pageid,
-                            'length': articleLength,
-                            'isread': isRead,
-                            'domaine': 'Random',
-                            'isreadparts': listOfIsRead,
-                            'title': article!.query.pages.pageId.title,
-                          },
-                          {
-                            'pageid': 500,
-                            'length': 3000,
-                            'isread': true,
-                            'domaine': 'Random',
-                            'isreadparts': [false, false, false],
-                            'title': 'Fooled',
-                          }
-                        ]
+                        'article': dataOnUser +
+                            [
+                              {
+                                'pageid': article!.query.pages.pageId.pageid,
+                                'length': articleLength,
+                                'isread': isRead,
+                                'domaine': 'Random',
+                                'isreadparts': listOfIsRead,
+                                'numberofreadparagraphs': 0,
+                                'title': article!.query.pages.pageId.title,
+                              },
+                            ]
                       }
                     });
 
