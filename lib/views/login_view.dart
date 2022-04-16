@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tentative_chao_1/services/auth/auth_exceptions.dart';
 
@@ -85,10 +86,15 @@ class _LoginViewState extends State<LoginView> {
               final email = _email.text;
               final password = _password.text;
               try {
+                // final userCredential = await FirebaseAuth.instance
+                //     .createUserWithEmailAndPassword(
+                //         email: email, password: password);
+                // print('Voila: ${userCredential.credential} jusque la');
+
                 await AuthService.firebase()
                     .logIn(email: email, password: password);
                 final user = AuthService.firebase().currentUser;
-                // TO ADD here
+                // TO ADD here if the user is new or not
                 if (user?.isEmailVerified ?? false) {
                   Navigator.of(context)
                       .pushNamedAndRemoveUntil('/choice/', (route) => false);
@@ -110,6 +116,13 @@ class _LoginViewState extends State<LoginView> {
               }
             },
             child: const Text('Connecter'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/register/', (route) => false);
+            },
+            child: const Text("Don't have an account yet? Create one here"),
           ),
         ],
       ),

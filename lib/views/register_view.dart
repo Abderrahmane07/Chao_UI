@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 
@@ -88,8 +90,24 @@ class _RegisterViewState extends State<RegisterView> {
               final email = _email.text;
               final password = _password.text;
               try {
+                // final userCredential = await FirebaseAuth.instance
+                //     .createUserWithEmailAndPassword(
+                //         email: email, password: password);
+                // userCredential.additionalUserInfo?.isNewUser;
+                // userCredential.additionalUserInfo?.providerId;
+
+                // print('Voila: ${userCredential.user?.uid} jusque la');
                 await AuthService.firebase()
                     .createUser(email: email, password: password);
+                final user = FirebaseAuth.instance.currentUser;
+                FirebaseFirestore.instance
+                    .collection('Users')
+                    .doc(user?.uid)
+                    .set({
+                  'isdark': false,
+                  'speed': 120,
+                  'fontsize': 14,
+                });
 
                 AuthService.firebase().sendEmailVerification();
                 Navigator.of(context).pushNamed('/verify/');

@@ -47,6 +47,23 @@ class ArticleFunctions {
     return listOfParagraphs;
   }
 
+// This function return an integer according to the list of booleens it is given;
+// if it's fully containing true then it return -1, if it contains falses from a
+// certain position it returns its index
+  int coco(List<bool> listToSee) {
+    int index = 0;
+    for (int i = 0; i < listToSee.length; i++) {
+      if (listToSee[i]) {
+        index++;
+      }
+    }
+    if (index == listToSee.length) {
+      return -1;
+    } else {
+      return index;
+    }
+  }
+
   // This function calculates the number of words in a text
   int lengthOfPart(String text) {
     return text.split(' ').length;

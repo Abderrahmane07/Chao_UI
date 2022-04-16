@@ -3,8 +3,8 @@ class Paragraph {
   String text;
   int lengthOfParagraph;
 
-  String? fatherArticle;
-  String? section;
+  //String? fatherArticle;
+  //String? section;
 
   Paragraph({
     required this.text,
