@@ -6,21 +6,27 @@ import 'dart:math';
 
 class RemoteService {
   Random random = Random();
-  Future<Article?> getArticle(List<bool> testList) async {
-    var client = http.Client();
-    String finalOne = linkGenerator(testList);
 
-    var uri = Uri.parse(finalOne);
+  Future<List> getArticle(List<bool> testList) async {
+    var client = http.Client();
+    List<String> finalOne = linkGenerator(testList);
+
+    var uri = Uri.parse(finalOne[0]);
     var response = await client.get(uri);
     if (response.statusCode == 200) {
       var json = response.body;
-      return articleFromJson(json);
+      return [articleFromJson(json), finalOne[1]];
     } else {
       throw const Text('Error in RemoteService Class');
     }
   }
 
-  String linkGenerator(List<bool> listinherited) {
+// This function takes the list of booleens that determine the preferences of the user
+// and gives back in return a ready to use link for the API call, after trimming the link
+// from the web and replacing '_' with '%20' even if the API apparently supports also
+// the first one, after this we add in the beggining the root String needed to make the API call
+// for the English Wikipedia, we may need to change this in the future
+  List<String> linkGenerator(List<bool> listinherited) {
     List<int> testListToInt = [];
     List<String> linksToString = links.keys.toList();
     for (var i = 0; i < listinherited.length; i++) {
@@ -46,7 +52,7 @@ class RemoteService {
     String apiCallLink =
         'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&titles=';
     String generalLink = apiCallLink + wikiModi;
-    return generalLink.replaceAll('_', '%20');
+    return [generalLink.replaceAll('_', '%20'), domaine];
   }
 }
 

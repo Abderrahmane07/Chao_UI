@@ -46,6 +46,7 @@ class _ArticleViewState extends State<ArticleView> {
   String articleTitle;
   var isNew;
   var indexOfArticleInList;
+  var domaine;
 
   @override
   void initState() {
@@ -54,7 +55,9 @@ class _ArticleViewState extends State<ArticleView> {
   }
 
   getData() async {
-    article = await RemoteService().getArticle(choice);
+    List result = await RemoteService().getArticle(choice);
+    article = result[0];
+    domaine = result[1];
     articleTitle = article!.query.pages.pageId.title;
     isNew = true;
 
@@ -67,11 +70,11 @@ class _ArticleViewState extends State<ArticleView> {
       try {
         // This part to access a certain element in the whole user Map given back in response
         var dataOnUser = documentSnapshot.data()! as Map<String, dynamic>;
-        print(dataOnUser['articles']['nbofcompletedarticles']);
+        //print(dataOnUser['articles']['nbofcompletedarticles']);
 
         dataOnArticles =
             documentSnapshot.get(FieldPath(['articles', 'article']));
-        print(dataOnArticles);
+        //print(dataOnArticles);
         if (dataOnArticles != null) {
           for (int i = 0; i < dataOnArticles.length; i++) {
             if (dataOnArticles[i]['title'] == articleTitle &&
@@ -83,7 +86,7 @@ class _ArticleViewState extends State<ArticleView> {
         }
 
         //print(dataOnArticles[indexOfArticleInList]);
-        print(isNew);
+        print('This article is new? $isNew');
         //print(dataOnUser[1]['isreadparts']);
         //print(dataOnUser);
       } on StateError catch (e) {
@@ -199,7 +202,7 @@ class _ArticleViewState extends State<ArticleView> {
                         'pageid': article!.query.pages.pageId.pageid,
                         'length': articleLength,
                         'isread': isRead,
-                        'domaine': 'Random',
+                        'domaine': domaine,
                         'isreadparts': listOfIsRead,
                         'numberofreadparagraphs': 0,
                         'title': articleTitle,
@@ -220,7 +223,7 @@ class _ArticleViewState extends State<ArticleView> {
                           'pageid': article!.query.pages.pageId.pageid,
                           'length': articleLength,
                           'isread': isRead,
-                          'domaine': 'Random',
+                          'domaine': domaine,
                           'isreadparts': listOfIsRead,
                           'numberofreadparagraphs': 0,
                           'title': articleTitle,
