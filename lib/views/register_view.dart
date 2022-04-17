@@ -107,6 +107,12 @@ class _RegisterViewState extends State<RegisterView> {
                   'isdark': false,
                   'speed': 120,
                   'fontsize': 14,
+                  'articles': {
+                    'nbofcompletedarticles': 0,
+                    'article': [
+                      {},
+                    ]
+                  }
                 });
 
                 AuthService.firebase().sendEmailVerification();

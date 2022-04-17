@@ -91,6 +91,7 @@ class _TimeViewState extends State<TimeView> {
           builder: (context) => ArticleView(
             choice: listToSend,
             time: temps,
+            articleTitle: '',
           ),
         ));
   }
