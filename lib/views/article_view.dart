@@ -195,27 +195,26 @@ class _ArticleViewState extends State<ArticleView> {
                         : false;
                     print(indexOfLastParagraph);
                     if (!isNew) {
+                      dataOnArticles[indexOfArticleInList] = {
+                        'pageid': article!.query.pages.pageId.pageid,
+                        'length': articleLength,
+                        'isread': isRead,
+                        'domaine': 'Random',
+                        'isreadparts': listOfIsRead,
+                        'numberofreadparagraphs': 0,
+                        'title': articleTitle,
+                      };
                       FirebaseFirestore.instance
                           .collection('Users')
                           .doc(user?.uid)
                           .update({
                         'articles': {
                           'nbofcompletedarticles': 0,
-                          'article{$indexOfArticleInList}': [
-                            {
-                              'pageid': article!.query.pages.pageId.pageid,
-                              'length': articleLength,
-                              'isread': isRead,
-                              'domaine': 'Random',
-                              'isreadparts': listOfIsRead,
-                              'numberofreadparagraphs': 0,
-                              'title': articleTitle,
-                            },
-                          ]
+                          'article': dataOnArticles
                         }
                       });
                     } else {
-                      print(dataOnArticles);
+                      // print(dataOnArticles);
                       dataOnArticles.add(
                         {
                           'pageid': article!.query.pages.pageId.pageid,
@@ -227,7 +226,7 @@ class _ArticleViewState extends State<ArticleView> {
                           'title': articleTitle,
                         },
                       );
-                      print(dataOnArticles);
+                      // print(dataOnArticles);
                       FirebaseFirestore.instance
                           .collection('Users')
                           .doc(user?.uid)
