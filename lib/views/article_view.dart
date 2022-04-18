@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:tentative_chao_1/models/paragraph.dart';
+import 'package:tentative_chao_1/views/rating_view.dart';
 import 'package:tentative_chao_1/views/sidebar_view.dart';
 import '../models/article.dart';
 import '../providers/our_font_size_provider.dart';
@@ -31,14 +32,13 @@ class ArticleView extends StatefulWidget {
 }
 
 int indexOfLastParagraph = 0;
+double rating = 0.0;
 
 class _ArticleViewState extends State<ArticleView> {
   List<bool> choice;
   int time;
   _ArticleViewState(this.choice, this.time, this.articleTitle);
   final user = FirebaseAuth.instance.currentUser;
-
-  //db.collection('users').doc(userCredential.user.uid)
 
   Article? article;
   var isLoaded = false;
@@ -70,7 +70,6 @@ class _ArticleViewState extends State<ArticleView> {
       try {
         // This part to access a certain element in the whole user Map given back in response
         var dataOnUser = documentSnapshot.data()! as Map<String, dynamic>;
-        //print(dataOnUser['articles']['nbofcompletedarticles']);
 
         dataOnArticles =
             documentSnapshot.get(FieldPath(['articles', 'article']));
@@ -84,34 +83,10 @@ class _ArticleViewState extends State<ArticleView> {
             }
           }
         }
-
-        //print(dataOnArticles[indexOfArticleInList]);
         print('This article is new? $isNew');
-        //print(dataOnUser[1]['isreadparts']);
-        //print(dataOnUser);
       } on StateError catch (e) {
-        // FirebaseFirestore.instance.collection('Users').doc(user?.uid).set({
-        //   'articles': {
-        //     'nbofcompletedarticles': 0,
-        //     'article': [
-        //       {
-        //         'pageid': article!.query.pages.pageId.pageid,
-        //         'domaine': 'Random',
-        //         'numberofreadparagraphs': 0,
-        //       },
-        //     ]
-        //   }
-        // });
-        //dataOnArticles = [{}];
         print('No nested field exists!');
-        //getData();
       }
-      // if (documentSnapshot.exists) {
-      //   final temporary = documentSnapshot.data();
-      //   print(temporary['articles']);
-      //   print(documentSnapshot.data());
-      //   print('Document exists on the database');
-      // }
     });
     if (article != null) {
       setState(() {
@@ -122,7 +97,6 @@ class _ArticleViewState extends State<ArticleView> {
 
   @override
   Widget build(BuildContext context) {
-    //final data = snapshot.requireData;
     return Scaffold(
       drawer: const SidebarView(),
       appBar: AppBar(
@@ -132,8 +106,6 @@ class _ArticleViewState extends State<ArticleView> {
         visible: isLoaded,
         child: ListView.builder(
           itemBuilder: (context, index) {
-            //print('ici $dataOnArticles');
-            //print(List<bool>.from(dataOnUser[2]['isreadparts']).runtimeType);
             List<Paragraph> part;
             String choosenArticle;
             int toStartFrom = 0;
@@ -151,9 +123,6 @@ class _ArticleViewState extends State<ArticleView> {
               part = ArticleFunctions().decomposeToParagraphs(choosenArticle);
             }
 
-            // final userCredential = FirebaseAuth.instance.currentUser?.uid;
-            // return Text(article!.query.pages.the736.extract);
-
             String choosenPart =
                 ArticleFunctions().timeToArticle(part, time)[0];
             indexOfLastParagraph =
@@ -163,85 +132,84 @@ class _ArticleViewState extends State<ArticleView> {
             print('The part contains $partLength words');
             int articleLength = ArticleFunctions().lengthOfPart(choosenArticle);
             print('The article contains $articleLength words');
+            double taille =
+                (Provider.of<OurFontSize>(context).ourFontSize).toDouble();
             return Column(
               children: [
+                //Html(data: choosenArticle),
                 Html(
                   data: choosenPart,
                   style: {
+                    'h1': Style(
+                      fontSize: FontSize(
+                        taille + 12,
+                      ),
+                    ),
+                    'h2': Style(
+                      fontSize: FontSize(
+                        taille + 9,
+                      ),
+                    ),
+                    'h3': Style(
+                      fontSize: FontSize(
+                        taille + 6,
+                      ),
+                    ),
+                    'h4': Style(
+                      fontSize: FontSize(
+                        taille + 3,
+                      ),
+                    ),
                     'p': Style(
                       fontSize: FontSize(
-                          (Provider.of<OurFontSize>(context).ourFontSize)
-                              .toDouble()),
-                    )
+                        taille,
+                      ),
+                    ),
                   },
                 ),
                 OutlinedButton(
+                  //child: const Text('coco'),
                   onPressed: () {
-                    List<bool> listOfIsRead;
-                    if (!isNew) {
-                      listOfIsRead = List<bool>.from(
-                          dataOnArticles[indexOfArticleInList]['isreadparts']);
-                      for (int i = toStartFrom;
-                          i < toStartFrom + indexOfLastParagraph;
-                          i++) {
-                        listOfIsRead[i] = true;
-                      }
-                    } else {
-                      listOfIsRead = List.filled(part.length, false);
-                      for (int i = 0; i < indexOfLastParagraph; i++) {
-                        listOfIsRead[i] = true;
-                      }
-                    }
-
-                    bool isRead = ArticleFunctions().coco(listOfIsRead) == -1
-                        ? true
-                        : false;
-                    print(indexOfLastParagraph);
-                    if (!isNew) {
-                      dataOnArticles[indexOfArticleInList] = {
-                        'pageid': article!.query.pages.pageId.pageid,
-                        'length': articleLength,
-                        'isread': isRead,
-                        'domaine': domaine,
-                        'isreadparts': listOfIsRead,
-                        'numberofreadparagraphs': 0,
-                        'title': articleTitle,
-                      };
-                      FirebaseFirestore.instance
-                          .collection('Users')
-                          .doc(user?.uid)
-                          .update({
-                        'articles': {
-                          'nbofcompletedarticles': 0,
-                          'article': dataOnArticles
-                        }
-                      });
-                    } else {
-                      // print(dataOnArticles);
-                      dataOnArticles.add(
-                        {
-                          'pageid': article!.query.pages.pageId.pageid,
-                          'length': articleLength,
-                          'isread': isRead,
-                          'domaine': domaine,
-                          'isreadparts': listOfIsRead,
-                          'numberofreadparagraphs': 0,
-                          'title': articleTitle,
-                        },
-                      );
-                      // print(dataOnArticles);
-                      FirebaseFirestore.instance
-                          .collection('Users')
-                          .doc(user?.uid)
-                          .update({
-                        // 'speed': 120,
-                        'articles': {
-                          'nbofcompletedarticles': 0,
-                          'article': FieldValue.arrayUnion(dataOnArticles)
-                        }
-                      });
-                    }
-                    //print('Reading Done');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RatingView(),
+                        ));
+                    // showModalBottomSheet<void>(
+                    //     context: context,
+                    //     builder: (BuildContext context) {
+                    //       return Container(
+                    //         height: 400,
+                    //         color: Colors.white,
+                    //         child: Column(children: [
+                    //           Text('Speed'),
+                    //           Slider(
+                    //             value: rating,
+                    //             onChanged: (newRating) {
+                    //               setState(() {
+                    //                 rating = newRating;
+                    //               });
+                    //             },
+                    //             min: -10.0,
+                    //             max: 10.0,
+                    //             divisions: 20,
+                    //           )
+                    //         ]),
+                    // child: Center(
+                    //   child: Column(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     mainAxisSize: MainAxisSize.min,
+                    //     children: <Widget>[
+                    //       const Text('Modal BottomSheet'),
+                    //       ElevatedButton(
+                    //         child: const Text('Close BottomSheet'),
+                    //         onPressed: () => Navigator.pop(context),
+                    //       )
+                    //     ],
+                    //   ),
+                    // ),
+                    //   );
+                    // });
                   },
                   child: const Text(
                     'Done Reading',
@@ -260,3 +228,68 @@ class _ArticleViewState extends State<ArticleView> {
     );
   }
 }
+
+// This part is inside the button we moved it here to test the pop up button that
+// will allow us to verify the reading and give a rating for the suggestion and the speed
+
+// List<bool> listOfIsRead;
+//                     if (!isNew) {
+//                       listOfIsRead = List<bool>.from(
+//                           dataOnArticles[indexOfArticleInList]['isreadparts']);
+//                       for (int i = toStartFrom;
+//                           i < toStartFrom + indexOfLastParagraph;
+//                           i++) {
+//                         listOfIsRead[i] = true;
+//                       }
+//                     } else {
+//                       listOfIsRead = List.filled(part.length, false);
+//                       for (int i = 0; i < indexOfLastParagraph; i++) {
+//                         listOfIsRead[i] = true;
+//                       }
+//                     }
+
+//                     bool isRead = ArticleFunctions().coco(listOfIsRead) == -1
+//                         ? true
+//                         : false;
+//                     print(indexOfLastParagraph);
+//                     if (!isNew) {
+//                       dataOnArticles[indexOfArticleInList] = {
+//                         'pageid': article!.query.pages.pageId.pageid,
+//                         'length': articleLength,
+//                         'isread': isRead,
+//                         'domaine': domaine,
+//                         'isreadparts': listOfIsRead,
+//                         'numberofreadparagraphs': 0,
+//                         'title': articleTitle,
+//                       };
+//                       FirebaseFirestore.instance
+//                           .collection('Users')
+//                           .doc(user?.uid)
+//                           .update({
+//                         'articles': {
+//                           'nbofcompletedarticles': 0,
+//                           'article': dataOnArticles
+//                         }
+//                       });
+//                     } else {
+//                       dataOnArticles.add(
+//                         {
+//                           'pageid': article!.query.pages.pageId.pageid,
+//                           'length': articleLength,
+//                           'isread': isRead,
+//                           'domaine': domaine,
+//                           'isreadparts': listOfIsRead,
+//                           'numberofreadparagraphs': 0,
+//                           'title': articleTitle,
+//                         },
+//                       );
+//                       FirebaseFirestore.instance
+//                           .collection('Users')
+//                           .doc(user?.uid)
+//                           .update({
+//                         'articles': {
+//                           'nbofcompletedarticles': 0,
+//                           'article': FieldValue.arrayUnion(dataOnArticles)
+//                         }
+//                       });
+//                     }

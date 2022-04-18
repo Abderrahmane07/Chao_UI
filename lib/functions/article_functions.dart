@@ -33,10 +33,10 @@ class ArticleFunctions {
     Paragraph part;
     String paragraph;
 
+    int indexOfEnd;
     while (truncatedArticle.contains(begOfParagraph)) {
-      int indexOfBeg = truncatedArticle.indexOf(begOfParagraph);
-      int indexOfEnd = truncatedArticle.indexOf(endOfParagraph);
-      paragraph = truncatedArticle.substring(indexOfBeg, indexOfEnd + 4);
+      indexOfEnd = truncatedArticle.indexOf(endOfParagraph);
+      paragraph = truncatedArticle.substring(0, indexOfEnd + 4);
       truncatedArticle = truncatedArticle.substring(indexOfEnd + 4);
 
       part = Paragraph(
