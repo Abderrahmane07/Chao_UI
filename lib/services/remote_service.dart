@@ -57,15 +57,18 @@ class RemoteService {
 
   Future<List> titlePicker(List<bool> inheritedList) async {
     List result = await categorySelector(inheritedList);
-    Category selectedSubCategory = result[0];
+    Category selectedCategory = result[0];
     String domaine = result[1];
+    String selectedSubCategory;
+    do {
+      selectedSubCategory = (selectedCategory.query.categorymembers)[
+              random.nextInt((selectedCategory.query.categorymembers).length)]
+          .title;
+    } while ((selectedCategory.query.categorymembers).isEmpty);
 
-    String selectedCategory = (selectedSubCategory.query.categorymembers)[
-            random.nextInt((selectedSubCategory.query.categorymembers).length)]
-        .title;
     // List selectedCategories = (selectedSubCategory.query.categorymembers)[0].title;
     String url =
-        'https://en.wikipedia.org/w/api.php?format=json&action=query&list=categorymembers&cmtitle=$selectedCategory&cmlimit=max&cmnamespace=0';
+        'https://en.wikipedia.org/w/api.php?format=json&action=query&list=categorymembers&cmtitle=$selectedSubCategory&cmlimit=max&cmnamespace=0';
     var uri = Uri.parse(url);
     var response = await client.get(uri);
     Category jsonOfSubCategory;

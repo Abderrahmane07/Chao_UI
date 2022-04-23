@@ -101,14 +101,7 @@ class _ArticleViewState extends State<ArticleView> {
       drawer: const SidebarView(),
       appBar: AppBar(
         backgroundColor: Colors.black54,
-        title: Row(
-          children: [
-            SizedBox(
-              width: 80,
-            ),
-            Text(articleTitle),
-          ],
-        ),
+        title: Text(articleTitle),
       ),
       body: Visibility(
         visible: isLoaded,
