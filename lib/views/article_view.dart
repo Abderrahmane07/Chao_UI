@@ -100,7 +100,15 @@ class _ArticleViewState extends State<ArticleView> {
     return Scaffold(
       drawer: const SidebarView(),
       appBar: AppBar(
-        title: Text(articleTitle),
+        backgroundColor: Colors.black54,
+        title: Row(
+          children: [
+            SizedBox(
+              width: 80,
+            ),
+            Text(articleTitle),
+          ],
+        ),
       ),
       body: Visibility(
         visible: isLoaded,
@@ -168,13 +176,112 @@ class _ArticleViewState extends State<ArticleView> {
                   },
                 ),
                 OutlinedButton(
-                  //child: const Text('coco'),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RatingView(),
-                        ));
+                    List<bool> listOfIsRead;
+                    if (!isNew) {
+                      listOfIsRead = List<bool>.from(
+                          dataOnArticles[indexOfArticleInList]['isreadparts']);
+                      for (int i = toStartFrom;
+                          i < toStartFrom + indexOfLastParagraph;
+                          i++) {
+                        listOfIsRead[i] = true;
+                      }
+                    } else {
+                      listOfIsRead = List.filled(part.length, false);
+                      for (int i = 0; i < indexOfLastParagraph; i++) {
+                        listOfIsRead[i] = true;
+                      }
+                    }
+
+                    bool isRead = ArticleFunctions().coco(listOfIsRead) == -1
+                        ? true
+                        : false;
+                    print(indexOfLastParagraph);
+                    if (!isNew) {
+                      dataOnArticles[indexOfArticleInList] = {
+                        'pageid': article!.query.pages.pageId.pageid,
+                        'length': articleLength,
+                        'isread': isRead,
+                        'domaine': domaine,
+                        'isreadparts': listOfIsRead,
+                        'numberofreadparagraphs': 0,
+                        'title': articleTitle,
+                      };
+                      FirebaseFirestore.instance
+                          .collection('Users')
+                          .doc(user?.uid)
+                          .update({
+                        'articles': {
+                          'nbofcompletedarticles': 0,
+                          'article': dataOnArticles
+                        }
+                      });
+                    } else {
+                      dataOnArticles.add(
+                        {
+                          'pageid': article!.query.pages.pageId.pageid,
+                          'length': articleLength,
+                          'isread': isRead,
+                          'domaine': domaine,
+                          'isreadparts': listOfIsRead,
+                          'numberofreadparagraphs': 0,
+                          'title': articleTitle,
+                        },
+                      );
+                      FirebaseFirestore.instance
+                          .collection('Users')
+                          .doc(user?.uid)
+                          .update({
+                        'articles': {
+                          'nbofcompletedarticles': 0,
+                          'article': FieldValue.arrayUnion(dataOnArticles)
+                        }
+                      });
+                    }
+                  },
+                  child: const Text(
+                    'Done Reading',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
+            );
+          },
+          itemCount: 1,
+        ),
+        replacement: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
+    );
+  }
+}
+
+// This part is inside the button we moved it here to test the pop up button that
+// will allow us to verify the reading and give a rating for the suggestion and the speed
+
+
+
+
+
+
+
+
+
+// 1
+                  // onPressed: () {
+                  //   Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => RatingView(),
+                  //       ));
+                  // },
+                  // child: const Text(
+                  //   'Done Reading',
+                  //   style: TextStyle(color: Colors.black),
+                  // ),
+
+                    // 2
                     // showModalBottomSheet<void>(
                     //     context: context,
                     //     builder: (BuildContext context) {
@@ -210,86 +317,3 @@ class _ArticleViewState extends State<ArticleView> {
                     // ),
                     //   );
                     // });
-                  },
-                  child: const Text(
-                    'Done Reading',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-              ],
-            );
-          },
-          itemCount: 1,
-        ),
-        replacement: const Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
-    );
-  }
-}
-
-// This part is inside the button we moved it here to test the pop up button that
-// will allow us to verify the reading and give a rating for the suggestion and the speed
-
-// List<bool> listOfIsRead;
-//                     if (!isNew) {
-//                       listOfIsRead = List<bool>.from(
-//                           dataOnArticles[indexOfArticleInList]['isreadparts']);
-//                       for (int i = toStartFrom;
-//                           i < toStartFrom + indexOfLastParagraph;
-//                           i++) {
-//                         listOfIsRead[i] = true;
-//                       }
-//                     } else {
-//                       listOfIsRead = List.filled(part.length, false);
-//                       for (int i = 0; i < indexOfLastParagraph; i++) {
-//                         listOfIsRead[i] = true;
-//                       }
-//                     }
-
-//                     bool isRead = ArticleFunctions().coco(listOfIsRead) == -1
-//                         ? true
-//                         : false;
-//                     print(indexOfLastParagraph);
-//                     if (!isNew) {
-//                       dataOnArticles[indexOfArticleInList] = {
-//                         'pageid': article!.query.pages.pageId.pageid,
-//                         'length': articleLength,
-//                         'isread': isRead,
-//                         'domaine': domaine,
-//                         'isreadparts': listOfIsRead,
-//                         'numberofreadparagraphs': 0,
-//                         'title': articleTitle,
-//                       };
-//                       FirebaseFirestore.instance
-//                           .collection('Users')
-//                           .doc(user?.uid)
-//                           .update({
-//                         'articles': {
-//                           'nbofcompletedarticles': 0,
-//                           'article': dataOnArticles
-//                         }
-//                       });
-//                     } else {
-//                       dataOnArticles.add(
-//                         {
-//                           'pageid': article!.query.pages.pageId.pageid,
-//                           'length': articleLength,
-//                           'isread': isRead,
-//                           'domaine': domaine,
-//                           'isreadparts': listOfIsRead,
-//                           'numberofreadparagraphs': 0,
-//                           'title': articleTitle,
-//                         },
-//                       );
-//                       FirebaseFirestore.instance
-//                           .collection('Users')
-//                           .doc(user?.uid)
-//                           .update({
-//                         'articles': {
-//                           'nbofcompletedarticles': 0,
-//                           'article': FieldValue.arrayUnion(dataOnArticles)
-//                         }
-//                       });
-//                     }

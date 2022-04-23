@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:tentative_chao_1/enums/domaine.dart';
 
 import '../models/article.dart';
 import 'dart:math';
 
+import '../models/category.dart';
+
 class RemoteService {
   Random random = Random();
+  var client = http.Client();
 
-  Future<List> getArticle(List<bool> testList) async {
-    var client = http.Client();
-    List<String> finalOne = linkGenerator(testList);
+  Future<List> getArticle(List<bool> inheritedList) async {
+    List<String> finalOne = linkGenerator(inheritedList);
 
     var uri = Uri.parse(finalOne[0]);
     var response = await client.get(uri);
@@ -21,39 +24,103 @@ class RemoteService {
     }
   }
 
+  Future<Category> categorySelector(List<bool> inheritedList) async {
+    // var client = http.Client();
+    List<int> testListToInt = [];
+    for (var i = 0; i < inheritedList.length; i++) {
+      if (inheritedList[i] == true) {
+        testListToInt += [i];
+      }
+    }
+
+    String domaine;
+    if (testListToInt.isEmpty) {
+      domaine = domaines[random.nextInt(domaines.length)];
+    } else {
+      domaine = domaines[testListToInt[random.nextInt(testListToInt.length)]];
+    }
+    String url =
+        'https://en.wikipedia.org/w/api.php?action=query&list=categorymembers&cmtitle=Category:$domaine&cmlimit=max&cmnamespace=14';
+    var uri = Uri.parse(url);
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      var json = response.body;
+      return categoryFromJson(json);
+    } else {
+      throw const Text('Error in RemoteService Class - categorySelector');
+    }
+  }
+
+  Future<String> titlePicker(List<bool> inheritedList) async {
+    Category selectedSubCategory = await categorySelector(inheritedList);
+
+    String selectedCategory = (selectedSubCategory.query.categorymembers)[
+            random.nextInt((selectedSubCategory.query.categorymembers).length)]
+        .title;
+    // List selectedCategories = (selectedSubCategory.query.categorymembers)[0].title;
+    String url =
+        'https://en.wikipedia.org/w/api.php?action=query&list=categorymembers&cmtitle=$selectedCategory&cmlimit=max&cmnamespace=0';
+    var uri = Uri.parse(url);
+    var response = await client.get(uri);
+    Category jsonOfSubCategory;
+    if (response.statusCode == 200) {
+      var json = response.body;
+      jsonOfSubCategory = categoryFromJson(json);
+    } else {
+      throw const Text('Error in RemoteService Class - titlePicker');
+    }
+    String selectedTitle = (jsonOfSubCategory.query.categorymembers)[
+            random.nextInt((jsonOfSubCategory.query.categorymembers).length)]
+        .title;
+    return selectedTitle;
+  }
+
+  List<String> linkGenerator(String givenTitle) {
+    String domaine;
+
+    // This to take a link and give the title
+    // String wikiModi = wikiLink.replaceRange(0, 30, "");
+
+    String generalLink =
+        'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&titles=$givenTitle';
+    //String generalLink = apiCallLink + wikiModi;
+    return [generalLink.replaceAll('_', '%20'), domaine];
+  }
+
 // This function takes the list of booleens that determine the preferences of the user
 // and gives back in return a ready to use link for the API call, after trimming the link
 // from the web and replacing '_' with '%20' even if the API apparently supports also
 // the first one, after this we add in the beggining the root String needed to make the API call
 // for the English Wikipedia, we may need to change this in the future
-  List<String> linkGenerator(List<bool> listinherited) {
-    List<int> testListToInt = [];
-    List<String> linksToString = links.keys.toList();
-    for (var i = 0; i < listinherited.length; i++) {
-      if (listinherited[i] == true) {
-        testListToInt += [i];
-      }
-    }
-    String domaine;
-    if (testListToInt.isEmpty) {
-      domaine = 'Random';
-    } else {
-      domaine =
-          linksToString[testListToInt[random.nextInt(testListToInt.length)]];
-    }
-    List<String> list20 = links[domaine] ??
-        [
-          'https://en.wikipedia.org/wiki/Albert_Einstein',
-          'https://en.wikipedia.org/wiki/Randomness',
-          'https://en.wikipedia.org/wiki/Complexity',
-        ];
-    String wikiLink = list20[random.nextInt(list20.length)];
-    String wikiModi = wikiLink.replaceRange(0, 30, "");
-    String apiCallLink =
-        'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&titles=';
-    String generalLink = apiCallLink + wikiModi;
-    return [generalLink.replaceAll('_', '%20'), domaine];
-  }
+  // List<String> linkGenerator(List<bool> listinherited) {
+  //   List<int> testListToInt = [];
+  //   List<String> linksToString = links.keys.toList();
+  //   for (var i = 0; i < listinherited.length; i++) {
+  //     if (listinherited[i] == true) {
+  //       testListToInt += [i];
+  //     }
+  //   }
+  //   String domaine;
+  //   if (testListToInt.isEmpty) {
+  //     domaine = 'Random';
+  //   } else {
+  //     domaine =
+  //         linksToString[testListToInt[random.nextInt(testListToInt.length)]];
+  //   }
+  //   List<String> list20 = links[domaine] ??
+  //       [
+  //         'https://en.wikipedia.org/wiki/Albert_Einstein',
+  //         'https://en.wikipedia.org/wiki/Randomness',
+  //         'https://en.wikipedia.org/wiki/Complexity',
+  //       ];
+
+  //   String wikiLink = list20[random.nextInt(list20.length)];
+  //   String wikiModi = wikiLink.replaceRange(0, 30, "");
+  //   String apiCallLink =
+  //       'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&titles=';
+  //   String generalLink = apiCallLink + wikiModi;
+  //   return [generalLink.replaceAll('_', '%20'), domaine];
+  // }
 }
 
 const Map<String, List<String>> links = {

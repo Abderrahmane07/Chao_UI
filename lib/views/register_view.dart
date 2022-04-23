@@ -38,16 +38,20 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-      ),
+      appBar: null,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.black,
+      // ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // const Image(
-          //   image: AssetImage('assets/Homme_1.png'),
-          // ),
+          Expanded(
+            flex: 1,
+            child: const Image(
+              image: AssetImage('assets/Homme_1.png'),
+            ),
+          ),
           const SizedBox(
             height: 20,
           ),
@@ -134,7 +138,7 @@ class _RegisterViewState extends State<RegisterView> {
 
               //Navigator.of(context).pushNamed('/choice/');
             },
-            child: const Text('Connecter'),
+            child: const Text('Create account'),
           ),
           TextButton(
             onPressed: () {

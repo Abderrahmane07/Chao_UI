@@ -34,16 +34,19 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-      ),
+      appBar: null,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.black,
+      // ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // const Image(
-          //   image: AssetImage('assets/Homme_1.png'),
-          // ),
+          Expanded(
+            child: const Image(
+              image: AssetImage('assets/Homme_1.png'),
+            ),
+          ),
           const SizedBox(
             height: 20,
           ),
@@ -115,7 +118,7 @@ class _LoginViewState extends State<LoginView> {
                 await showErrorDialog(context, "Authentication error");
               }
             },
-            child: const Text('Connecter'),
+            child: const Text('Se Connecter'),
           ),
           TextButton(
             onPressed: () {

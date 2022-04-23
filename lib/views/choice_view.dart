@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tentative_chao_1/views/time_view.dart';
 
+import '../enums/domaine.dart';
+
 class ChoiceView extends StatefulWidget {
   const ChoiceView({Key? key}) : super(key: key);
 
@@ -12,9 +14,10 @@ class _ChoiceViewState extends State<ChoiceView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-      ),
+      appBar: null,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.black,
+      // ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,6 +77,24 @@ class _ChoiceViewState extends State<ChoiceView> {
                     Align(
                       child: choiceButton(10),
                     ),
+                    Align(
+                      child: choiceButton(11),
+                    ),
+                    Align(
+                      child: choiceButton(12),
+                    ),
+                    Align(
+                      child: choiceButton(13),
+                    ),
+                    Align(
+                      child: choiceButton(14),
+                    ),
+                    Align(
+                      child: choiceButton(15),
+                    ),
+                    Align(
+                      child: choiceButton(16),
+                    ),
                   ]),
             ),
           ),
@@ -120,19 +141,19 @@ class _ChoiceViewState extends State<ChoiceView> {
   }
 }
 
-const List<String> domaines = [
-  "Astronomy",
-  "Blockchain",
-  "Mathematics",
-  "Science",
-  "History",
-  "Medicine",
-  "Art",
-  "Sport",
-  "Technology",
-  "Biology",
-  "Geography",
-  "Finance",
-  "Architecture"
-];
+// const List<String> domaines = [
+//   "Astronomy",
+//   "Blockchain",
+//   "Mathematics",
+//   "Science",
+//   "History",
+//   "Medicine",
+//   "Art",
+//   "Sport",
+//   "Technology",
+//   "Biology",
+//   "Geography",
+//   "Finance",
+//   "Architecture"
+// ];
 List<bool> activateds = List.generate(domaines.length, (_) => false);
