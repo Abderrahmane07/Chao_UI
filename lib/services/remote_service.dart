@@ -61,6 +61,9 @@ class RemoteService {
     String domaine = result[1];
     String selectedSubCategory;
     do {
+      result = await categorySelector(inheritedList);
+      selectedCategory = result[0];
+      domaine = result[1];
       selectedSubCategory = (selectedCategory.query.categorymembers)[
               random.nextInt((selectedCategory.query.categorymembers).length)]
           .title;

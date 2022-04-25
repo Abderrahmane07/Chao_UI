@@ -10,7 +10,7 @@ class ArticleFunctions {
     int wordsCount = 0;
     String partToRead = '';
     int index = 0;
-    while (wordsCount < 0.9 * words && index < listOfParagraphs.length) {
+    while (wordsCount < words && index < listOfParagraphs.length) {
       if (!listOfParagraphs[index].isRead) {
         partToRead += listOfParagraphs[index].text;
         wordsCount += listOfParagraphs[index].lengthOfParagraph;

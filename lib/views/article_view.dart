@@ -97,6 +97,15 @@ class _ArticleViewState extends State<ArticleView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => super.widget));
+        },
+        child: const Icon(Icons.replay),
+      ),
       drawer: const SidebarView(),
       appBar: AppBar(
         backgroundColor: Colors.black54,
@@ -109,17 +118,17 @@ class _ArticleViewState extends State<ArticleView> {
             List<Paragraph> part;
             String choosenArticle;
             int toStartFrom = 0;
+            choosenArticle = article!.query.pages.pageId.extract;
             if (!isNew) {
               toStartFrom = ArticleFunctions().coco(List<bool>.from(
                   dataOnArticles[indexOfArticleInList]['isreadparts']));
-              choosenArticle = article!.query.pages.pageId.extract;
+              //choosenArticle = article!.query.pages.pageId.extract;
               List<Paragraph> originalPart =
                   ArticleFunctions().decomposeToParagraphs(choosenArticle);
               part = originalPart
                   .getRange(toStartFrom, originalPart.length)
                   .toList();
             } else {
-              choosenArticle = article!.query.pages.pageId.extract;
               part = ArticleFunctions().decomposeToParagraphs(choosenArticle);
             }
 
