@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tentative_chao_1/providers/our_font_family.dart';
@@ -14,7 +12,6 @@ import 'package:tentative_chao_1/views/verify_email_view.dart';
 // import 'package:tentative_chao_1/views/time_view.dart';
 import 'package:tentative_chao_1/views/welcome_view.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

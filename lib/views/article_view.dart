@@ -6,11 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:tentative_chao_1/models/paragraph.dart';
-import 'package:tentative_chao_1/views/rating_view.dart';
+// import 'package:tentative_chao_1/views/rating_view.dart';
 import 'package:tentative_chao_1/views/sidebar_view.dart';
 import '../models/article.dart';
 import '../providers/our_font_size_provider.dart';
-import '../services/auth/auth_service.dart';
 import '../services/remote_service.dart';
 import 'package:tentative_chao_1/functions/article_functions.dart';
 
