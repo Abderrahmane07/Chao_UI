@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tentative_chao_1/providers/our_font_family.dart';
 import 'package:tentative_chao_1/providers/our_font_size_provider.dart';
+import 'package:tentative_chao_1/providers/our_line_spacing_provider.dart';
 import 'package:tentative_chao_1/providers/our_theme_provider.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:tentative_chao_1/views/article_view.dart';
@@ -26,6 +27,9 @@ Future<void> main() async {
       ),
       ChangeNotifierProvider(
         create: (_) => OurFontFamily(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => OurLineSpacing(),
       ),
     ],
     child: const LoadingScreen(),

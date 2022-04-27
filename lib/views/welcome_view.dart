@@ -16,7 +16,9 @@ class _WelcomeViewState extends State<WelcomeView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Image(
-            image: AssetImage('assets/LogoBig.png'),
+            image: NetworkImage(
+                'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZSWUCiXJ4kYigEuAedEKwaoCccFy_C6SyvTy2k4et-jiWynSQgalIUJE5f7iXxu4w5JT0iv3NFFbpyRqbgCBcpDXTBnfNwydKNxKHTdmmpt9e8RRe4TLPa0MSr1x-Tw7rfXSJq7ajeFC8fM7SgL8gRNayl78UBrwNsWdzHLo8Hv3GbYP3yFjbx-17/s16000/LogoBig.png'),
+            //image: AssetImage('assets/LogoBig.png'),
           ),
           const SizedBox(
             height: 20,

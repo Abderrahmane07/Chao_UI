@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:tentative_chao_1/providers/our_font_family.dart';
 import 'package:tentative_chao_1/providers/our_font_size_provider.dart';
+import 'package:tentative_chao_1/providers/our_line_spacing_provider.dart';
 import 'package:tentative_chao_1/providers/our_theme_provider.dart';
 
 import '../services/auth/auth_service.dart';
@@ -17,27 +19,36 @@ class _SidebarViewState extends State<SidebarView> {
   bool isNoDisturbMode = false;
   // String font = 'Neuton';
 
-  List<bool> _selections = List.generate(3, (_) => false);
+  List<bool> _selections = [false, true, false];
+//  List<bool> _selections = List.generate(3, (_) => false);
 
   @override
   Widget build(BuildContext context) {
     bool isDarkView = Provider.of<OurTheme>(context).isDark;
     int taille = Provider.of<OurFontSize>(context).ourFontSize;
     String font = Provider.of<OurFontFamily>(context).ourFontFamily;
+    List<bool> listOfLineSpacing =
+        Provider.of<OurLineSpacing>(context).ourLineList;
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: const Text('Trissiane'),
-            accountEmail: const Text('Trissiane.Abdellah@gmail.com'),
+            accountName: const Text('Welcome,'),
+            accountEmail: const Text('Email.test@gmail.com'),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
-                child: Image.network(
-                  'https://img-19.commentcamarche.net/cI8qqj-finfDcmx6jMK6Vr-krEw=/1500x/smart/b829396acc244fd484c5ddcdcb2b08f3/ccmcms-commentcamarche/20494859.jpg',
+                child: Container(
+                  color: Colors.black,
+                  // child: const Text('T'),
                   height: 90,
                   width: 90,
-                  fit: BoxFit.cover,
+
+                  // child: Image.network(
+                  //   'https://img-19.commentcamarche.net/cI8qqj-finfDcmx6jMK6Vr-krEw=/1500x/smart/b829396acc244fd484c5ddcdcb2b08f3/ccmcms-commentcamarche/20494859.jpg',
+                  // height: 90,
+                  // width: 90,
+                  // fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -45,7 +56,7 @@ class _SidebarViewState extends State<SidebarView> {
               color: Colors.black38,
               image: DecorationImage(
                   image: NetworkImage(
-                    'https://www.philomag.com/sites/default/files/styles/facebook/public/images/pmfr98entretienalain-berthozmarc-thirouin2.jpg',
+                    'https://sothebys-com.brightspotcdn.com/dims4/default/d7c7769/2147483647/strip/false/crop/640x360+0+0/resize/1200x675!/quality/90/?url=http%3A%2F%2Fsothebys-brightspot-migration.s3.amazonaws.com%2F1d%2Fc9%2F29%2F63fdd1edaa4c75d199965a7b1aabaac65843e8cc3c4a919d5d88db0af0%2Fdali-recirc.jpg',
                   ),
                   fit: BoxFit.cover),
             ),
@@ -131,20 +142,31 @@ class _SidebarViewState extends State<SidebarView> {
                 ),
               ),
               const SizedBox(
-                height: 30,
+                height: 10,
               ),
               ToggleButtons(
                 children: const [
-                  Icon(Icons.local_airport),
-                  Icon(Icons.face),
-                  Icon(Icons.cabin),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Icon(Icons.density_small),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Icon(Icons.density_medium),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Icon(Icons.density_large),
+                  ),
                 ],
-                isSelected: _selections,
+                isSelected: listOfLineSpacing,
                 onPressed: (int index) {
                   setState(() {
-                    bool temporary = _selections[index];
-                    _selections = [false, false, false];
-                    _selections[index] = !temporary;
+                    bool temporary = listOfLineSpacing[index];
+                    listOfLineSpacing = [false, false, false];
+                    listOfLineSpacing[index] = !temporary;
+                    Provider.of<OurLineSpacing>(context, listen: false)
+                        .change(listOfLineSpacing);
                   });
                 },
                 renderBorder: false,
@@ -154,6 +176,9 @@ class _SidebarViewState extends State<SidebarView> {
                 child: Row(
                   children: [
                     const Icon(Icons.text_fields),
+                    const SizedBox(
+                      width: 70,
+                    ),
                     Row(
                       children: [
                         TextButton(

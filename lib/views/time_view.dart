@@ -31,7 +31,9 @@ class _TimeViewState extends State<TimeView> {
           const Align(
             alignment: Alignment.center,
             child: Image(
-              image: AssetImage('assets/Homme_2.png'),
+              image: NetworkImage(
+                  'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgKrXT6kyg2lb_kn0EzOMaANdF2ICHlXogyyEf3w6tesFYqGfgof329nLO--QI0QALent0RPOxOMD-qbEzwsPDUmCC4IKrZRY8p5f5B8EZMyHRens9hiaIGgyGMALeHQv90S6DZnVAFTsjHtYZH_1RqO7qSepFVNcLQJjqSJ3xAUIvrZabNG7efJNhb/s16000/Homme_2.png'),
+              //image: AssetImage('assets/Homme_2.png'),
             ),
           ),
           const SizedBox(

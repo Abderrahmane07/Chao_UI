@@ -43,7 +43,9 @@ class _LoginViewState extends State<LoginView> {
         children: [
           Expanded(
             child: const Image(
-              image: AssetImage('assets/Homme_1.png'),
+              image: NetworkImage(
+                  'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi0uOAsc-Ughjqx0qoKU9XnadcegGFVcPOxSATV4m__Ib6AXpaT48cQBBtzU9xDy34hoZdU4taK-LH1oZSWNoyry9FRYN9fc-nahjV2NeB16CM_JDqm_1W-8f_A4rkbrCGsUoK4ZLDQGtyPxqylWQsgYeU8elGwGRKheNl2y1syv6JOxLMZDyHkFl0u/s16000/Homme_1.png'),
+              // image: AssetImage('assets/Homme_1.png'),
             ),
           ),
           const SizedBox(

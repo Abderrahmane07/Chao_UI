@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OurFontSize with ChangeNotifier {
-  int _ourFontSize = 14;
+  int _ourFontSize = 18;
 
   int get ourFontSize => _ourFontSize;
 

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:tentative_chao_1/models/paragraph.dart';
+import 'package:tentative_chao_1/providers/our_line_spacing_provider.dart';
 // import 'package:tentative_chao_1/views/rating_view.dart';
 import 'package:tentative_chao_1/views/sidebar_view.dart';
 import '../models/article.dart';
@@ -143,6 +144,8 @@ class _ArticleViewState extends State<ArticleView> {
             print('The article contains $articleLength words');
             double taille =
                 (Provider.of<OurFontSize>(context).ourFontSize).toDouble();
+            double lineSpacing =
+                Provider.of<OurLineSpacing>(context).ourLineSpacing;
             return Column(
               children: [
                 //Html(data: choosenArticle),
@@ -170,6 +173,12 @@ class _ArticleViewState extends State<ArticleView> {
                       ),
                     ),
                     'p': Style(
+                      lineHeight: LineHeight(lineSpacing, units: "em"),
+                      fontSize: FontSize(
+                        taille,
+                      ),
+                    ),
+                    'li': Style(
                       fontSize: FontSize(
                         taille,
                       ),

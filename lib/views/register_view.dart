@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:tentative_chao_1/services/auth/auth_exceptions.dart';
 import 'package:tentative_chao_1/services/auth/auth_service.dart';
 
 import '../functions/error_dialog.dart';
+import '../providers/our_font_size_provider.dart';
 import '../services/auth/auth_service.dart';
 
 class RegisterView extends StatefulWidget {
@@ -37,6 +39,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
+    int taille = Provider.of<OurFontSize>(context, listen: false).ourFontSize;
     return Scaffold(
       appBar: null,
       // appBar: AppBar(
@@ -46,10 +49,12 @@ class _RegisterViewState extends State<RegisterView> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
+          const Expanded(
             flex: 1,
-            child: const Image(
-              image: AssetImage('assets/Homme_1.png'),
+            child: Image(
+              image: NetworkImage(
+                  'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi0uOAsc-Ughjqx0qoKU9XnadcegGFVcPOxSATV4m__Ib6AXpaT48cQBBtzU9xDy34hoZdU4taK-LH1oZSWNoyry9FRYN9fc-nahjV2NeB16CM_JDqm_1W-8f_A4rkbrCGsUoK4ZLDQGtyPxqylWQsgYeU8elGwGRKheNl2y1syv6JOxLMZDyHkFl0u/s16000/Homme_1.png'),
+              //image: AssetImage('assets/Homme_1.png'),
             ),
           ),
           const SizedBox(
@@ -103,6 +108,7 @@ class _RegisterViewState extends State<RegisterView> {
                 // print('Voila: ${userCredential.user?.uid} jusque la');
                 await AuthService.firebase()
                     .createUser(email: email, password: password);
+
                 final user = FirebaseAuth.instance.currentUser;
                 FirebaseFirestore.instance
                     .collection('Users')
@@ -110,7 +116,7 @@ class _RegisterViewState extends State<RegisterView> {
                     .set({
                   'isdark': false,
                   'speed': 120,
-                  'fontsize': 14,
+                  'fontsize': taille,
                   'articles': {
                     'nbofcompletedarticles': 0,
                     'article': [

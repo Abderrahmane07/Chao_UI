@@ -25,7 +25,9 @@ class _ChoiceViewState extends State<ChoiceView> {
           const Align(
             alignment: Alignment.centerRight,
             child: Image(
-              image: AssetImage('assets/Femme.png'),
+              image: NetworkImage(
+                  'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZx8huY3zDNE5XeuHDdcJhR0sUxUUh5L-7hqbY_k16s1oP0cbdtsMfghLDtK3r-Nh0-FKbDowYApxNj_jhSKXxA4y9S9fIayPMrgKpKbtjOZOZa8I9AFeEN5ikBiLn75hs5Ge9ZjEFJ-caXNEAShKjK8Ek65p_MWUoTCT8WTaq3HykRT96SnLt43uq/s16000/Femme.png'),
+              //image: AssetImage('assets/Femme.png'),
             ),
           ),
           const SizedBox(
