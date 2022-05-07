@@ -11,6 +11,19 @@ class RemoteService {
   Random random = Random();
   var client = http.Client();
 
+  Future<List> getArticleFromTitle(String title) async {
+    String finalCallLink = linkGenerator(title);
+
+    var uri = Uri.parse(finalCallLink);
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      var json = response.body;
+      return [articleFromJson(json), 'Choosed Title'];
+    } else {
+      throw const Text('Error in RemoteService Class');
+    }
+  }
+
   Future<List> getArticle(List<bool> inheritedList) async {
     List titleAndDomaine = await titlePicker(inheritedList);
     String title = titleAndDomaine[0];

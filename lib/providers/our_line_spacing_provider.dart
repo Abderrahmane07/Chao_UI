@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OurLineSpacing with ChangeNotifier {
-  double _ourLineSpacing = 1;
+  double _ourLineSpacing = 1.2;
   List<bool> _ourLineList = [false, true, false];
 
   double get ourLineSpacing => _ourLineSpacing;
@@ -18,7 +18,7 @@ class OurLineSpacing with ChangeNotifier {
       _ourLineSpacing = 1.5;
       _ourLineList = [false, false, true];
     } else {
-      _ourLineSpacing = 1;
+      _ourLineSpacing = 1.2;
       _ourLineList = [false, true, false];
     }
 

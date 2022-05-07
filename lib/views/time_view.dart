@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:tentative_chao_1/views/article_from_title_view.dart';
 
 import 'article_view.dart';
 
 class TimeView extends StatefulWidget {
   final List<bool> choice;
-  const TimeView({Key? key, required this.choice}) : super(key: key);
+  final String articleTitle;
+  const TimeView({Key? key, required this.choice, required this.articleTitle})
+      : super(key: key);
 
   @override
-  State<TimeView> createState() => _TimeViewState(choice);
+  State<TimeView> createState() => _TimeViewState(choice, articleTitle);
 }
 
 class _TimeViewState extends State<TimeView> {
   List<bool> choice;
-  _TimeViewState(this.choice);
+  String articleTitle;
+  _TimeViewState(this.choice, this.articleTitle);
 
   final List<int> choiceTime = List.generate(30, (index) => index + 1);
   var temps;
@@ -70,7 +74,12 @@ class _TimeViewState extends State<TimeView> {
           ),
           OutlinedButton(
             onPressed: () {
-              _sendDataToThirdScreen(context);
+              if (articleTitle == '') {
+                _sendDataToArticleView(context);
+              } else {
+                _sendDataToArticleFromTitleView(context);
+              }
+
               // Navigator.of(context).pushNamed(
               //   '/article/',
               // );
@@ -85,7 +94,7 @@ class _TimeViewState extends State<TimeView> {
     );
   }
 
-  void _sendDataToThirdScreen(BuildContext context) {
+  void _sendDataToArticleView(BuildContext context) {
     List<bool> listToSend = choice;
     Navigator.push(
         context,
@@ -94,6 +103,18 @@ class _TimeViewState extends State<TimeView> {
             choice: listToSend,
             time: temps,
             articleTitle: '',
+          ),
+        ));
+  }
+
+  void _sendDataToArticleFromTitleView(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ArticleFromTitleView(
+            choice: choice,
+            time: temps,
+            articleTitle: articleTitle,
           ),
         ));
   }

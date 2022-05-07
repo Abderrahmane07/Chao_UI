@@ -7,19 +7,18 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:tentative_chao_1/models/paragraph.dart';
 import 'package:tentative_chao_1/providers/our_line_spacing_provider.dart';
-// import 'package:tentative_chao_1/views/rating_view.dart';
 import 'package:tentative_chao_1/views/sidebar_view.dart';
 import '../models/article.dart';
 import '../providers/our_font_size_provider.dart';
 import '../services/remote_service.dart';
 import 'package:tentative_chao_1/functions/article_functions.dart';
 
-class ArticleView extends StatefulWidget {
+class ArticleFromTitleView extends StatefulWidget {
   final List<bool> choice;
 
   final int time;
   final String articleTitle;
-  const ArticleView(
+  const ArticleFromTitleView(
       {Key? key,
       required this.choice,
       required this.time,
@@ -27,17 +26,17 @@ class ArticleView extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<ArticleView> createState() =>
-      _ArticleViewState(choice, time, articleTitle);
+  State<ArticleFromTitleView> createState() =>
+      _ArticleFromTitleViewState(choice, time, articleTitle);
 }
 
 int indexOfLastParagraph = 0;
 double rating = 0.0;
 
-class _ArticleViewState extends State<ArticleView> {
+class _ArticleFromTitleViewState extends State<ArticleFromTitleView> {
   List<bool> choice;
   int time;
-  _ArticleViewState(this.choice, this.time, this.articleTitle);
+  _ArticleFromTitleViewState(this.choice, this.time, this.articleTitle);
   final user = FirebaseAuth.instance.currentUser;
 
   Article? article;
@@ -55,7 +54,7 @@ class _ArticleViewState extends State<ArticleView> {
   }
 
   getData() async {
-    List result = await RemoteService().getArticle(choice);
+    List result = await RemoteService().getArticleFromTitle(articleTitle);
     article = result[0];
     domaine = result[1];
     articleTitle = article!.query.pages.pageId.title;
@@ -272,64 +271,3 @@ class _ArticleViewState extends State<ArticleView> {
     );
   }
 }
-
-// This part is inside the button we moved it here to test the pop up button that
-// will allow us to verify the reading and give a rating for the suggestion and the speed
-
-
-
-
-
-
-
-
-
-// 1
-                  // onPressed: () {
-                  //   Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => RatingView(),
-                  //       ));
-                  // },
-                  // child: const Text(
-                  //   'Done Reading',
-                  //   style: TextStyle(color: Colors.black),
-                  // ),
-
-                    // 2
-                    // showModalBottomSheet<void>(
-                    //     context: context,
-                    //     builder: (BuildContext context) {
-                    //       return Container(
-                    //         height: 400,
-                    //         color: Colors.white,
-                    //         child: Column(children: [
-                    //           Text('Speed'),
-                    //           Slider(
-                    //             value: rating,
-                    //             onChanged: (newRating) {
-                    //               setState(() {
-                    //                 rating = newRating;
-                    //               });
-                    //             },
-                    //             min: -10.0,
-                    //             max: 10.0,
-                    //             divisions: 20,
-                    //           )
-                    //         ]),
-                    // child: Center(
-                    //   child: Column(
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     mainAxisSize: MainAxisSize.min,
-                    //     children: <Widget>[
-                    //       const Text('Modal BottomSheet'),
-                    //       ElevatedButton(
-                    //         child: const Text('Close BottomSheet'),
-                    //         onPressed: () => Navigator.pop(context),
-                    //       )
-                    //     ],
-                    //   ),
-                    // ),
-                    //   );
-                    // });

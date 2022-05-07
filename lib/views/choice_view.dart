@@ -112,6 +112,13 @@ class _ChoiceViewState extends State<ChoiceView> {
               style: TextStyle(color: Colors.black),
             ),
           ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/title/', (route) => false);
+            },
+            child: const Text("Want to read a specific article? check here"),
+          ),
         ],
       ),
     );
@@ -138,6 +145,7 @@ class _ChoiceViewState extends State<ChoiceView> {
         MaterialPageRoute(
           builder: (context) => TimeView(
             choice: listToSend,
+            articleTitle: '',
           ),
         ));
   }
