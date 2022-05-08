@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:tentative_chao_1/providers/google_sign_in.dart';
 import 'package:tentative_chao_1/providers/our_font_family.dart';
 import 'package:tentative_chao_1/providers/our_font_size_provider.dart';
 import 'package:tentative_chao_1/providers/our_line_spacing_provider.dart';
@@ -9,6 +11,7 @@ import 'package:tentative_chao_1/providers/our_theme_provider.dart';
 import 'package:tentative_chao_1/views/choice_view.dart';
 import 'package:tentative_chao_1/views/login_view.dart';
 import 'package:tentative_chao_1/views/register_view.dart';
+import 'package:tentative_chao_1/views/root_view.dart';
 import 'package:tentative_chao_1/views/title_view.dart';
 import 'package:tentative_chao_1/views/verify_email_view.dart';
 // import 'package:tentative_chao_1/views/time_view.dart';
@@ -32,6 +35,9 @@ Future<void> main() async {
       ChangeNotifierProvider(
         create: (_) => OurLineSpacing(),
       ),
+      ChangeNotifierProvider(
+        create: (_) => GoogleSignInProvider(),
+      ),
     ],
     child: const LoadingScreen(),
   ));
@@ -54,6 +60,7 @@ class LoadingScreen extends StatelessWidget {
           : ThemeMode.light),
       routes: {
         '/': ((context) => const WelcomeView()),
+        '/root/': ((context) => const RootView()),
         '/login/': ((context) => const LoginView()),
         '/choice/': ((context) => const ChoiceView()),
         '/register/': ((context) => const RegisterView()),

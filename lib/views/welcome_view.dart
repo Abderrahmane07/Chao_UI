@@ -26,7 +26,7 @@ class _WelcomeViewState extends State<WelcomeView> {
           TextButton(
             onPressed: () {
               Navigator.of(context).pushNamed(
-                '/register/',
+                '/root/',
               );
             },
             child: const Text(

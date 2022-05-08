@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tentative_chao_1/providers/google_sign_in.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:tentative_chao_1/services/auth/auth_exceptions.dart';
@@ -55,6 +56,22 @@ class _RegisterViewState extends State<RegisterView> {
               image: NetworkImage(
                   'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi0uOAsc-Ughjqx0qoKU9XnadcegGFVcPOxSATV4m__Ib6AXpaT48cQBBtzU9xDy34hoZdU4taK-LH1oZSWNoyry9FRYN9fc-nahjV2NeB16CM_JDqm_1W-8f_A4rkbrCGsUoK4ZLDQGtyPxqylWQsgYeU8elGwGRKheNl2y1syv6JOxLMZDyHkFl0u/s16000/Homme_1.png'),
               //image: AssetImage('assets/Homme_1.png'),
+            ),
+          ),
+          // const SizedBox(
+          //   height: 20,
+          // ),
+          ElevatedButton(
+            onPressed: () {
+              final provider =
+                  Provider.of<GoogleSignInProvider>(context, listen: false);
+              provider.googleLogin();
+            },
+            child: Text('Sign up with Google'),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.white,
+              onPrimary: Colors.black,
+              minimumSize: Size(200, 50),
             ),
           ),
           const SizedBox(
